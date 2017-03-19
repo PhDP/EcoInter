@@ -1,0 +1,1 @@
+"Consumer" "Resource" "Interac" "mass.x" "though" "mobility" "above.x" "below.x" "RS1.x" "RS2.x" "Kingdom" "mass.y" "Web" "Poison" "herbivore" "carnivore" "fungivore" "detritivore" "above.y" "below.y" "RS1.y" "RS2.y"

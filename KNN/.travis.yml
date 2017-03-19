@@ -1,0 +1,56 @@
+sudo: required
+dist: trusty
+
+language:
+  - cpp
+
+matrix:
+  include:
+    - env: BUILD=DEBUG
+      compiler: gcc
+
+    - env: BUILD=RELEASE
+      compiler: gcc
+
+    - env: BUILD=DEBUG CXXFLAGS="-stdlib=libc++"
+      compiler: clang
+
+    - env: BUILD=RELEASE CXXFLAGS="-stdlib=libc++"
+      compiler: clang
+
+before_install:
+  - if [ "$CXX" == "clang++" ]; then echo "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main" | sudo tee -a /etc/apt/sources.list; fi
+  - if [ "$CXX" == "clang++" ]; then echo "deb-src http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main" | sudo tee -a /etc/apt/sources.list; fi
+  - if [ "$CXX" == "clang++" ]; then wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -; fi
+  - sudo apt-get update -qq
+
+install:
+  - if [ "$CXX" == "g++" ]; then sudo apt-get install -qq g++; fi
+  - if [ "$CXX" == "clang++" ]; then sudo apt-get install -qq clang-3.6 libc++-dev libc++abi-dev; fi
+  - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.6"; fi
+  - sudo apt-get install -qq build-essential python python-all-dev libpython-all-dev
+  - wget http://www.cmake.org/files/v3.4/cmake-3.4.3.tar.gz
+  - tar xf cmake-3.4.3.tar.gz
+  - cd cmake-3.4.3
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+  - PROJECT_DIR=`pwd`
+  - BOOST=$HOME/boost
+  - git clone --depth 1 -b boost-1.58.0 https://github.com/boostorg/boost.git $BOOST
+  - cd $BOOST
+  - git submodule update --init --merge
+  - ./bootstrap.sh
+  - ./b2 headers
+  - cd $PROJECT_DIR
+
+script:
+  - export BOOST_ROOT=$BOOST
+  - $CXX --version
+  - cmake --version
+  - mkdir -p build && cd build
+  - cmake .. -DBuildTests=On -DCMAKE_BUILD_TYPE=${BUILD} -DCMAKE_CXX_FLAGS=${CXXFLAGS} -DBOOST_ROOT="$BOOST_ROOT"
+  - make
+  - make test
+  - ./test/run_tests
