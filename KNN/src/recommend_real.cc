@@ -19,13 +19,13 @@ int main(int argc, char **argv) {
 
   // Read interactions:
   auto inter = mercure::csv_into_sets("./data/mercure-interactions.csv");
-  // Read traits
-  auto traits = mercure::csv_into_sets("./data/mercure-traits.csv");
+  // Read real traits:
+  auto real_traits = mercure::csv_into_vectors("./data/mercure-real.csv");
 
   // Number of species
   auto const n = inter.size();
 
-  assert(inter.size() == traits.size());
+  assert(inter.size() == real_traits.size());
 
   for (auto k = 1u; k <= 19; k += 2) {
     for (auto i = 0; i <= 5; ++i) {
@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
           inter[species].erase(removed_it);
 
           // Generate the recommendations with Mercure (we don't care about the count).
-          auto recommendations = mercure::recommendations(k, inter, traits, species, w);
+          auto recommendations = mercure::recommendations(k, inter, real_traits, species, w);
 
           size_t const maxr = std::min((unsigned int)recommendations.size(), 10u);
           for (auto r = 0u; r < maxr; ++r) {

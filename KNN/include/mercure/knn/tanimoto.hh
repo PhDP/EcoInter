@@ -12,6 +12,23 @@
 
 namespace mercure {
 
+inline double absolute(double x) {
+  return x < 0? -x : x;
+}
+
+/**
+ * \brief Tanimoto similarity on two vectors.
+ */
+inline double fuzzy_tanimoto_distance(std::vector<double> const& xs, std::vector<double> const& ys) {
+  if (xs.empty() || ys.empty())
+    return 0;
+
+  double distance = 0.0;
+  size_t const n = std::min(xs.size(), ys.size());
+  for (auto i = 0u; i < n; ++i) distance += absolute(xs[i] - ys[i]);
+  return distance / n;
+}
+
 /**
  * \brief Tanimoto similarity on two vectors.
  */

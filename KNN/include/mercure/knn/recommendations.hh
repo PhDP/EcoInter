@@ -14,6 +14,14 @@ auto recommendations(
     double w_t)
     -> std::vector<uint32_t>;
 
+auto recommendations(
+    size_t k,
+    std::vector<set<uint32_t>> const& data,
+    std::vector<std::vector<double>> const& traits,
+    size_t species_idx,
+    double w_t)
+    -> std::vector<uint32_t>;
+
 } /* end namespace mercure */
 
 #endif

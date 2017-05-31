@@ -13,10 +13,9 @@ Developed and tested on Fedora Linux x64 with gcc 6.1.1, clang 3.8, and boost 1.
     $ make
     $ make test
 
-After computing, put the executables at the root of the directory (here with
-the README) before running.
-
-Et voilà! On Windows, cmake can be used to generate Visual Studio projects.
+Move the binaries you want to use to the root of the directory (here with the
+README file) et voilà! On Windows, cmake can be used to generate Visual Studio
+projects.
 
 ## License
 
