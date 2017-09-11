@@ -41,6 +41,9 @@ target_link_libraries(recommend ${CMAKE_THREAD_LIBS_INIT} ${MATH_LIBS})
 add_executable(recommend_real src/recommend_real.cc src/recommendations.cc)
 target_link_libraries(recommend ${CMAKE_THREAD_LIBS_INIT} ${MATH_LIBS})
 
+add_executable(fuzzthatneighbour src/fuzzthatneighbour.cc)
+target_link_libraries(recommend ${CMAKE_THREAD_LIBS_INIT} ${MATH_LIBS})
+
 if (BuildTests)
   enable_testing()
   add_subdirectory(test)
